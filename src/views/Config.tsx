@@ -19,13 +19,13 @@ const Config = () => {
 
 const configStyles = StyleSheet.create({
 	configText: {
-		 textAlign: 'left',
-		 marginBottom: 10,
-		 fontSize: 24,
+		textAlign: 'left',
+		marginBottom: 10,
+		fontSize: 30,
+		color: 'white'
 	},
 	configContainer: {
 		margin: 15,
-		
 	}
 })
 

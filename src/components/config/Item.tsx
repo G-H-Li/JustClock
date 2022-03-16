@@ -26,6 +26,7 @@ const configItemStyles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: '400',
 		flex:7,
+		color: 'white'
 	},
 	itemChildren: {
 		flex: 3

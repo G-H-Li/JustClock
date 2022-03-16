@@ -30,15 +30,20 @@ const App = () => {
 
 const styles = StyleSheet.create({
   appContainer: {
+    paddingTop: 15,
     paddingHorizontal: 24,
+    backgroundColor: 'black',
     flex: 1,
     flexDirection: "column"
   },
   appClock: {
-    flex: 2
+    flex: 2.5,
+    borderBottomColor: 'grey',
+    borderStyle: 'solid',
+    borderWidth: 1
   },
   appConfig: {
-    flex: 8
+    flex: 7.5
   }
 });
 

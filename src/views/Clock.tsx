@@ -35,10 +35,11 @@ const Clock:React.FC<{
 const clockStyles = StyleSheet.create({
 	clockContainer: {
 		justifyContent: 'center',
-		flex: 1
+		flex: 1,
 	},
 	clockText: {
 		fontSize: 85,
+		color: 'white',
 		fontWeight: "600",
 		textAlign: 'center',
 	}
