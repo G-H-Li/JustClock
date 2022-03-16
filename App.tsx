@@ -8,42 +8,83 @@
  * @format
  */
 
-import React from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
-  SafeAreaView, StyleSheet, View,
+  PixelRatio,
+  SafeAreaView, StatusBar, StyleSheet, useWindowDimensions, View,
 } from 'react-native';
 import Config from "./src/views/Config";
 import Clock from "./src/views/Clock";
 
-const App = () => {
+const HorizonApp: FC<{format: string}> = ({children, format}) => {
+  return (
+  <SafeAreaView style={styles.appHorizonContainer}>
+    <StatusBar translucent={true} />
+    <View style={styles.appHorizonClock}>
+      <Clock format={format} isHorizon={true}/>
+    </View>
+  </SafeAreaView>
+  )
+};
+
+const VerticalApp: FC<{format: string}> = ({children, format}) => {
   return (
     <SafeAreaView style={styles.appContainer}>
+      <StatusBar translucent={true} />
       <View style={styles.appClock}>
-        <Clock format={'HH:mm:ss'}/>
+        <Clock format={format} isHorizon={false}/>
       </View>
       <View style={styles.appConfig}>
         <Config/>
       </View>
     </SafeAreaView>
-  );
+  )
+};
+
+const App = () => {
+  const format = "HH:mm:ss";
+  //横屏检测
+  const [isHorizon, useHorizon] = useState(false);
+  const windowWidth = useWindowDimensions().width;
+  const windowHeight = useWindowDimensions().height;
+  useEffect(() => {
+    let state = windowWidth > windowHeight;
+    if(state !== isHorizon){
+      useHorizon(state);
+    }
+  });
+  if(isHorizon){
+    return <HorizonApp format={format}/>;
+  }else {
+    return <VerticalApp format={format}/>;
+  }
 };
 
 const styles = StyleSheet.create({
+  appHorizonContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'black',
+    flex: 1
+  },
+  appHorizonClock: {
+    flex: 1
+  },
   appContainer: {
     paddingTop: 15,
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     backgroundColor: 'black',
     flex: 1,
     flexDirection: "column"
   },
   appClock: {
     flex: 2.5,
-    borderBottomColor: 'grey',
-    borderStyle: 'solid',
-    borderWidth: 1
   },
   appConfig: {
-    flex: 7.5
+    flex: 7.5,
+    borderTopColor: 'grey',
+    borderStyle: 'solid',
+    borderWidth: 1
   }
 });
 
