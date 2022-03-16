@@ -1,38 +1,40 @@
 import {StyleSheet, Text, View} from "react-native";
 import dayjs from "dayjs";
-import React, {useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {scaleText} from "../utils/FontAdaptor";
 
 
 
-const Clock:React.FC<{
+const Clock:FC<{
 	format: string,
 	isHorizon: boolean
 }> = ({children, format, isHorizon}) => {
 	
-	const [time, setTime] = useState("");
+	const getTime = (f: string) => {
+		return dayjs().format(f);
+	};
+
+	const [time, setTime] = useState(getTime(format));
 	
-	function runTime() {
-		let tmp = dayjs().format(format);
-		if(tmp !== time){
+	const runTime = () => {
+		const tmp = getTime(format);
+		if(tmp !== time) {
 			setTime(tmp);
 		}
-	}
-	
+	};
 	
 	useEffect(() => {
 		const timer = setInterval(runTime, 400);
 		return () => clearInterval(timer);
-	}, [time]);
+	});
 	
-	let fontSize= isHorizon? scaleText(150): scaleText(80);
 	return (
 		<View style={clockStyles.clockContainer}>
 			<Text style={{
 				color: 'white',
 				fontWeight: 'bold',
 				textAlign: 'center',
-				fontSize: fontSize
+				fontSize: isHorizon? scaleText(150): scaleText(80)
 			}}>{time}</Text>
 			{children}
 		</View>
@@ -43,7 +45,7 @@ const clockStyles = StyleSheet.create({
 	clockContainer: {
 		justifyContent: 'center',
 		alignContent: 'center',
-		flex: 1,
+		flex: 1
 	},
 })
 

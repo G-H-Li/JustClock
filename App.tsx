@@ -9,17 +9,15 @@
  */
 
 import React, {FC, useEffect, useState} from 'react';
-import {
-  PixelRatio,
-  SafeAreaView, StatusBar, StyleSheet, useWindowDimensions, View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, useWindowDimensions, View} from 'react-native';
+import IdleTimerManager from 'react-native-idle-timer';
 import Config from "./src/views/Config";
 import Clock from "./src/views/Clock";
 
 const HorizonApp: FC<{format: string}> = ({children, format}) => {
   return (
   <SafeAreaView style={styles.appHorizonContainer}>
-    <StatusBar translucent={true} />
+    <StatusBar translucent={true} hidden={true}/>
     <View style={styles.appHorizonClock}>
       <Clock format={format} isHorizon={true}/>
     </View>
@@ -30,7 +28,7 @@ const HorizonApp: FC<{format: string}> = ({children, format}) => {
 const VerticalApp: FC<{format: string}> = ({children, format}) => {
   return (
     <SafeAreaView style={styles.appContainer}>
-      <StatusBar translucent={true} />
+      <StatusBar translucent={true} hidden={true}/>
       <View style={styles.appClock}>
         <Clock format={format} isHorizon={false}/>
       </View>
@@ -42,17 +40,22 @@ const VerticalApp: FC<{format: string}> = ({children, format}) => {
 };
 
 const App = () => {
-  const format = "HH:mm:ss";
   //横屏检测
-  const [isHorizon, useHorizon] = useState(false);
+  const [isHorizon, setHorizon] = useState(true);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
   useEffect(() => {
     let state = windowWidth > windowHeight;
+    //开启屏幕常亮
+    IdleTimerManager.setIdleTimerDisabled(true);
     if(state !== isHorizon){
-      useHorizon(state);
+      setHorizon(state);
+    }
+    return () => {
+      IdleTimerManager.setIdleTimerDisabled(false);
     }
   });
+  let format = "HH:mm:ss";
   if(isHorizon){
     return <HorizonApp format={format}/>;
   }else {

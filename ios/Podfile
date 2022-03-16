@@ -12,6 +12,8 @@ target 'JustClock' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-idle-timer', :path => '../node_modules/react-native-idle-timer'
+
   target 'JustClockTests' do
     inherit! :complete
     # Pods for testing
